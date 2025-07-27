@@ -285,6 +285,36 @@ def disable_xbdStats():
     except Exception as e:
         return {"error": str(e)}
 
+def start_smb():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'start', 'smb'])
+        return {"message": "Starting SMB server!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+def stop_smb():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'stop', 'smb'])
+        return {"message": "Stopping SMB server!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def enable_smb():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'enable', 'smb'])
+        return {"message": "Enabling SMB server!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+def disable_smb():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'disable', 'smb'])
+        return {"message": "Disabling SMB server!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 # XLink, insigniaDNS & xbdStats App Routes
 
 @app.route('/startxlinkkai', methods=['GET'])
@@ -359,8 +389,31 @@ def disablexbdstats():
         return jsonify({"error": "Unauthorized"}), 401
     return jsonify(disable_xbdStats())
 
-# Home
+@app.route('/startxbdstats', methods=['GET'])
+def startsmb():
+    if not check_authorization(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(start_smb())
 
+@app.route('/stopsmb', methods=['GET'])
+def stopsmb():
+    if not check_authorization(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(stop_smb())
+
+@app.route('/enablexbdstats', methods=['GET'])
+def enablesmb():
+    if not check_authorization(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(enable_smb())
+
+@app.route('/disablexbdstats', methods=['GET'])
+def disablesmb():
+    if not check_authorization(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(disable_smb())
+
+# OUT OF DATE - NEED TO FIX!
 @app.route('/', methods=['GET'])
 def home():
     return """
