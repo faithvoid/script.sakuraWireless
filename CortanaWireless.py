@@ -299,7 +299,6 @@ def stop_smb():
     except Exception as e:
         return {"error": str(e)}
 
-
 def enable_smb():
     try:
         subprocess.call(['sudo', 'systemctl', 'enable', 'smb'])
@@ -314,8 +313,35 @@ def disable_smb():
     except Exception as e:
         return {"error": str(e)}
 
+def start_ftp():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'start', 'ftp'])
+        return {"message": "Starting FTP server!"}
+    except Exception as e:
+        return {"error": str(e)}
 
-# XLink, insigniaDNS & xbdStats App Routes
+def stop_ftp():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'stop', 'ftp'])
+        return {"message": "Stopping FTP server!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+def enable_ftp():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'enable', 'ftp'])
+        return {"message": "Enabling FTP server!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+def disable_ftp():
+    try:
+        subprocess.call(['sudo', 'systemctl', 'disable', 'ftp'])
+        return {"message": "Disabling FTP server!"}
+    except Exception as e:
+        return {"error": str(e)}
+
+# XLink, insigniaDNS xbdStats, SMB and FTP App Routes
 
 @app.route('/startxlinkkai', methods=['GET'])
 def startxlinkkai():
@@ -395,23 +421,29 @@ def startsmb():
         return jsonify({"error": "Unauthorized"}), 401
     return jsonify(start_smb())
 
+@app.route('/startsmb', methods=['GET'])
+def stopsmb():
+    if not check_authorization(request):
+        return jsonify({"error": "Unauthorized"}), 401
+    return jsonify(start_smb())
+
 @app.route('/stopsmb', methods=['GET'])
 def stopsmb():
     if not check_authorization(request):
         return jsonify({"error": "Unauthorized"}), 401
     return jsonify(stop_smb())
 
-@app.route('/enablexbdstats', methods=['GET'])
-def enablesmb():
+@app.route('/startftp', methods=['GET'])
+def stopsmb():
     if not check_authorization(request):
         return jsonify({"error": "Unauthorized"}), 401
-    return jsonify(enable_smb())
+    return jsonify(start_ftp())
 
-@app.route('/disablexbdstats', methods=['GET'])
-def disablesmb():
+@app.route('/stopftp', methods=['GET'])
+def stopsmb():
     if not check_authorization(request):
         return jsonify({"error": "Unauthorized"}), 401
-    return jsonify(disable_smb())
+    return jsonify(stop_ftp())
 
 # OUT OF DATE - NEED TO FIX!
 @app.route('/', methods=['GET'])
